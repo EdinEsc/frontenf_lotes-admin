@@ -31,7 +31,10 @@ export default function ImageUpload({ title, imageKey }) {
         headers: { "Content-Type": "multipart/form-data" },
       });
 
-      setImageUrl(`${import.meta.env.VITE_API_URL}/storage/${res.data.path}`);
+      // setImageUrl(`${import.meta.env.VITE_API_URL}/storage/${res.data.path}`);
+      setImageUrl(
+        `${import.meta.env.VITE_API_URL}/storage/${res.data.path}?t=${Date.now()}`
+      );
       setMsg("✅ Imagen actualizada correctamente");
     } catch (error) {
       console.error(error);
@@ -47,13 +50,23 @@ export default function ImageUpload({ title, imageKey }) {
         {title}
       </h3>
 
-      {imageUrl && (
+      {/* {imageUrl && (
         <img
           src={imageUrl}
           alt={title}
           className="w-full max-w-md h-40 object-cover rounded mb-4 border"
         />
+      )} */}
+
+      {imageUrl && (
+        <img
+          key={imageUrl}
+          src={imageUrl}
+          alt={title}
+          className="w-full max-w-md h-40 object-cover rounded mb-4 border"
+        />
       )}
+
 
       <input
         type="file"
