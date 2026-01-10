@@ -124,11 +124,13 @@
 
 import { useEffect, useState } from "react";
 import api from "../api/axios";
-
+import { toast } from "react-toastify";
 import ImageUpload from "../components/ImageUpload";
 import PageImageUpload from "../components/PageImageUpload";
 import VideoUpload from "../components/VideoUpload";
 import GalleryManager from "../components/GalleryManager";
+import ReferenciasManager from "../components/ReferenciasManager";
+
 
 
 function Dashboard() {
@@ -136,11 +138,13 @@ function Dashboard() {
   const [galleryImages, setGalleryImages] = useState([]);
 
   useEffect(() => {
-    api.get("/admin/mensajes").then(res => setMessages(res.data));
+    api.get("/admin/mensajes")
+      .then(res => setMessages(res.data))
+      .catch(() => toast.error("Error al cargar mensajes"));
 
     api.get("/admin/imagenes-gallery")
       .then(res => setGalleryImages(res.data))
-      .catch(err => console.error(err));
+      .catch(() => toast.error("Error al cargar galería"));
   }, []);
 
   return (
@@ -245,6 +249,21 @@ function Dashboard() {
                     const formData = new FormData();
                     formData.append("image", file);
 
+                    // try {
+                    //   const res = await api.post(
+                    //     `/admin/imagenes-gallery/${img.id}`,
+                    //     formData,
+                    //     { headers: { "Content-Type": "multipart/form-data" } }
+                    //   );
+
+                    //   setGalleryImages(prev =>
+                    //     prev.map(i =>
+                    //       i.id === img.id ? { ...i, url: res.data.url } : i
+                    //     )
+                    //   );
+                    // } catch (err) {
+                    //   console.error("Error al actualizar imagen", err);
+                    // }
                     try {
                       const res = await api.post(
                         `/admin/imagenes-gallery/${img.id}`,
@@ -257,9 +276,13 @@ function Dashboard() {
                           i.id === img.id ? { ...i, url: res.data.url } : i
                         )
                       );
+
+                      toast.success("Imagen actualizada correctamente");
                     } catch (err) {
                       console.error("Error al actualizar imagen", err);
+                      toast.error("Error al actualizar la imagen");
                     }
+
                   }}
                 />
               </label>
@@ -269,15 +292,27 @@ function Dashboard() {
       </section>
 
       {/* GALERÍA */}
-<section className="mb-8">
-  <div className="bg-white rounded-xl border border-[#cb4a2a] shadow-sm p-5">
-    <h3 className="text-xl font-semibold text-[#cb4a2a] mb-4">
-      Galería de Imágenes
-    </h3>
+      <section className="mb-8">
+        <div className="bg-white rounded-xl border border-[#cb4a2a] shadow-sm p-5">
+          <h3 className="text-xl font-semibold text-[#cb4a2a] mb-4">
+            Galería de Imágenes
+          </h3>
 
-    <GalleryManager section="home" />
-  </div>
-</section>
+          <GalleryManager section="home" />
+        </div>
+      </section>
+
+      {/* REFERENCIAS */}
+      <section className="mb-8">
+        <div className="bg-white rounded-xl border border-[#cb4a2a] shadow-sm p-5">
+          <h3 className="text-xl font-semibold text-[#cb4a2a] mb-4">
+            Referencias / Testimonios
+          </h3>
+
+          <ReferenciasManager />
+        </div>
+      </section>
+
 
 
       <hr className="my-8 border-gray-300" />
