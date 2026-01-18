@@ -1,127 +1,3 @@
-// import { useEffect, useState } from "react";
-// import api from "../api/axios";
-
-// import ImageUpload from "../components/ImageUpload";
-// import PageImageUpload from "../components/PageImageUpload";
-// import VideoUpload from "../components/VideoUpload";
-
-// function Dashboard() {
-//   const [messages, setMessages] = useState([]);
-//   const [galleryImages, setGalleryImages] = useState([]);
-
-//   useEffect(() => {
-//     api.get("/admin/mensajes").then(res => setMessages(res.data));
-
-//     api.get("/admin/imagenes-gallery")
-//       .then(res => setGalleryImages(res.data))
-//       .catch(err => console.error(err));
-//   }, []);
-
-//   return (
-//     // <div className="min-h-screen bg-gray-50 p-6">
-//     <div className="
-//       min-h-screen bg-gray-50 p-6
-//       ml-16
-//       transition-all duration-300
-//       group-hover:ml-56
-//     ">
-//       {/* ENCABEZADO */}
-//       <header className="mb-6">
-//         <h2 className="text-3xl font-bold text-[#cb4a2a]">
-//           Dashboard Admin
-//         </h2>
-//         <p className="text-gray-600 mt-1">
-//           Bienvenido al panel de administración
-//         </p>
-//       </header>
-
-//       {/* HERO IMAGE */}
-//       <section className="mb-8">
-//         <div className="bg-white shadow-md rounded-lg p-4">
-//           <ImageUpload
-//             title="Imagen Hero Principal"
-//             imageKey="hero_image"
-//           />
-//         </div>
-//       </section>
-
-//       {/* CONTACT BACKGROUND */}
-//       <section className="mb-8">
-//         <div className="bg-white shadow-md rounded-lg p-4">
-//           <PageImageUpload
-//             title="Fondo del Formulario de Contacto"
-//             imageKey="contact_background"
-//           />
-//         </div>
-//       </section>
-
-//       {/* VIDEO */}
-//       <section className="mb-8">
-//         <div className="bg-white shadow-md rounded-lg p-4">
-//           <h3 className="text-xl font-semibold text-[#2c976a] mb-3">
-//             Subir Video
-//           </h3>
-//           <VideoUpload />
-//         </div>
-//       </section>
-
-//       {/* GALERÍA */}
-//       <section className="mb-8">
-//         <div className="bg-white shadow-md rounded-lg p-4">
-//           <h3 className="text-xl font-semibold text-[#2c976a] mb-4">
-//             Galería de Imágenes
-//           </h3>
-
-//           <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-4">
-//             {galleryImages.map((img) => (
-//               <div key={img.id} className="border rounded-lg overflow-hidden relative">
-//                 <img
-//                   src={img.url}
-//                   alt="Galería"
-//                   className="w-full h-24 sm:h-32 object-cover"
-//                 />
-
-//                 <input
-//                   type="file"
-//                   className="absolute top-0 left-0 w-full h-full opacity-0 cursor-pointer"
-//                   onChange={async (e) => {
-//                     const file = e.target.files[0];
-//                     if (!file) return;
-
-//                     const formData = new FormData();
-//                     formData.append("image", file);
-
-//                     try {
-//                       const res = await api.post(
-//                         `/admin/imagenes-gallery/${img.id}`,
-//                         formData,
-//                         { headers: { "Content-Type": "multipart/form-data" } }
-//                       );
-
-//                       setGalleryImages(prev =>
-//                         prev.map(i =>
-//                           i.id === img.id ? { ...i, url: res.data.url } : i
-//                         )
-//                       );
-//                     } catch (err) {
-//                       console.error("Error al actualizar imagen", err);
-//                     }
-//                   }}
-//                 />
-//               </div>
-//             ))}
-//           </div>
-//         </div>
-//       </section>
-
-//       <hr className="my-8 border-gray-300" />
-//     </div>
-//   );
-// }
-
-// export default Dashboard;
-
-
 import { useEffect, useState } from "react";
 import api from "../api/axios";
 import { toast } from "react-toastify";
@@ -136,6 +12,10 @@ import ReferenciasManager from "../components/ReferenciasManager";
 function Dashboard() {
   const [messages, setMessages] = useState([]);
   const [galleryImages, setGalleryImages] = useState([]);
+  const [showVideo, setShowVideo] = useState(false);
+  const [showReferencias, setShowReferencias] = useState(false);
+
+
 
   useEffect(() => {
     api.get("/admin/mensajes")
@@ -156,47 +36,85 @@ function Dashboard() {
         group-hover:ml-56
       "
     >
-      {/* ENCABEZADO */}
-      <header className="mb-8">
-        <h2 className="text-3xl font-bold text-[#cb4a2a]">
-          Dashboard Admin
-        </h2>
-        <p className="text-gray-600 mt-1">
-          Bienvenido al panel de administración
-        </p>
-      </header>
+ 
+ 
+      <div className="mb-10">
+        <div className="rounded-2xl bg-[#2c976a] p-8 shadow-lg flex flex-col md:flex-row md:items-center md:justify-between">
 
-      {/* HERO IMAGE */}
+          <div>
+            <h2 className="text-4xl font-bold text-white">
+              Panel de Administración
+            </h2>
+            <p className="mt-2 text-white/90">
+              Gestión de contenido del sitio web
+            </p>
+          </div>
+
+          <div className="mt-6 md:mt-0">
+            <div className="px-6 py-3 bg-white/20 rounded-xl text-white font-semibold">
+              Lotes Chancay · Admin
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+
+      <section className="mb-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            
+        
+            <div className="bg-white rounded-xl border border-[#cb4a2a] shadow-sm p-5">
+              <ImageUpload
+                title="Plano de Lotes"
+                imageKey="hero_image"
+              />
+            </div>
+
+        
+            <div className="bg-white rounded-xl border border-[#cb4a2a] shadow-sm p-5">
+              <PageImageUpload
+                title="Fondo del Formulario de Contacto"
+                imageKey="contact_background"
+              />
+            </div>
+
+          </div>
+      </section>
+
+
       <section className="mb-8">
         <div className="bg-white rounded-xl border border-[#cb4a2a] shadow-sm p-5">
-          <ImageUpload
-            title="Plano de Lotes"
-            imageKey="hero_image"
-          />
+
+      
+          <button
+            onClick={() => setShowVideo(prev => !prev)}
+            className="
+              w-full flex justify-between items-center
+              text-xl font-semibold text-[#cb4a2a]
+            "
+          >
+            Gestión de Videos
+            <span className="text-2xl">
+              {showVideo ? "−" : "+"}
+            </span>
+          </button>
+
+        
+          <div
+            className={`
+              overflow-hidden transition-all duration-500
+              ${showVideo ? "max-h-[3000px] mt-6" : "max-h-0"}
+            `}
+          >
+            <VideoUpload />
+          </div>
+
         </div>
       </section>
 
-      {/* CONTACT BACKGROUND */}
-      <section className="mb-8">
-        <div className="bg-white rounded-xl border border-[#cb4a2a] shadow-sm p-5">
-          <PageImageUpload
-            title="Fondo del Formulario de Contacto"
-            imageKey="contact_background"
-          />
-        </div>
-      </section>
 
-      {/* VIDEO */}
-      <section className="mb-8">
-        <div className="bg-white rounded-xl border border-[#cb4a2a] shadow-sm p-5">
-          <h3 className="text-xl font-semibold text-[#cb4a2a] mb-4">
-            Subir Video
-          </h3>
-          <VideoUpload />
-        </div>
-      </section>
-
-      {/* GALERÍA */}
+   
       <section className="mb-8">
         <div className="bg-white rounded-xl border border-[#cb4a2a] shadow-sm p-5">
           <h3 className="text-xl font-semibold text-[#cb4a2a] mb-4">
@@ -249,21 +167,7 @@ function Dashboard() {
                     const formData = new FormData();
                     formData.append("image", file);
 
-                    // try {
-                    //   const res = await api.post(
-                    //     `/admin/imagenes-gallery/${img.id}`,
-                    //     formData,
-                    //     { headers: { "Content-Type": "multipart/form-data" } }
-                    //   );
-
-                    //   setGalleryImages(prev =>
-                    //     prev.map(i =>
-                    //       i.id === img.id ? { ...i, url: res.data.url } : i
-                    //     )
-                    //   );
-                    // } catch (err) {
-                    //   console.error("Error al actualizar imagen", err);
-                    // }
+                  
                     try {
                       const res = await api.post(
                         `/admin/imagenes-gallery/${img.id}`,
@@ -291,7 +195,7 @@ function Dashboard() {
         </div>
       </section>
 
-      {/* GALERÍA */}
+      
       <section className="mb-8">
         <div className="bg-white rounded-xl border border-[#cb4a2a] shadow-sm p-5">
           <h3 className="text-xl font-semibold text-[#cb4a2a] mb-4">
@@ -302,18 +206,35 @@ function Dashboard() {
         </div>
       </section>
 
-      {/* REFERENCIAS */}
+    
       <section className="mb-8">
         <div className="bg-white rounded-xl border border-[#cb4a2a] shadow-sm p-5">
-          <h3 className="text-xl font-semibold text-[#cb4a2a] mb-4">
-            Referencias / Testimonios
-          </h3>
 
-          <ReferenciasManager />
+          <button
+            onClick={() => setShowReferencias(prev => !prev)}
+            className="
+              w-full flex justify-between items-center
+              text-xl font-semibold text-[#cb4a2a]
+            "
+          >
+            Referencias / Testimonios
+            <span className="text-2xl">
+              {showReferencias ? "−" : "+"}
+            </span>
+          </button>
+
+        
+          <div
+            className={`
+              overflow-hidden transition-all duration-500
+              ${showReferencias ? "max-h-[3000px] mt-6" : "max-h-0"}
+            `}
+          >
+            <ReferenciasManager />
+          </div>
+
         </div>
       </section>
-
-
 
       <hr className="my-8 border-gray-300" />
     </div>

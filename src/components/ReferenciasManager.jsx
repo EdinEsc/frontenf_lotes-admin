@@ -1,4 +1,3 @@
-
 import { useEffect, useState } from "react";
 import api from "../api/axios";
 import { toast } from "react-toastify";
@@ -14,7 +13,6 @@ export default function ReferenciasManager() {
     imagen: null,
   });
 
-  // 🔹 cargar referencias
   const cargarReferencias = async () => {
     try {
       const res = await api.get("/referencias");
@@ -29,12 +27,10 @@ export default function ReferenciasManager() {
     cargarReferencias();
   }, []);
 
-  // 🔹 manejar inputs texto
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
-  // 🔹 crear o editar
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -42,18 +38,18 @@ export default function ReferenciasManager() {
     formData.append("nombre", form.nombre);
     formData.append("ciudad", form.ciudad);
     formData.append("texto", form.texto);
-    if (form.imagen) {
-      formData.append("imagen", form.imagen);
-    }
+    if (form.imagen) formData.append("imagen", form.imagen);
 
     try {
       if (editandoId) {
-        // ✏️ EDITAR
-        await api.post(`/admin/referencias/${editandoId}`, formData);
+        await api.post(`/admin/referencias/${editandoId}`, formData, {
+          headers: { "Content-Type": "multipart/form-data" },
+        });
         toast.success("Referencia actualizada correctamente");
       } else {
-        // ➕ CREAR
-        await api.post("/admin/referencias", formData);
+        await api.post("/admin/referencias", formData, {
+          headers: { "Content-Type": "multipart/form-data" },
+        });
         toast.success("Referencia creada correctamente");
       }
 
@@ -65,7 +61,6 @@ export default function ReferenciasManager() {
     }
   };
 
-  // 🔹 cargar datos para editar
   const editar = (ref) => {
     setEditandoId(ref.id);
     setForm({
@@ -76,13 +71,12 @@ export default function ReferenciasManager() {
     });
   };
 
-  // 🔹 eliminar
   const eliminar = async (id) => {
     if (!confirm("¿Eliminar referencia?")) return;
 
     try {
       await api.delete(`/admin/referencias/${id}`);
-      setReferencias(prev => prev.filter(r => r.id !== id));
+      setReferencias((prev) => prev.filter((r) => r.id !== id));
       toast.success("Referencia eliminada");
     } catch (err) {
       console.error(err);
@@ -90,7 +84,6 @@ export default function ReferenciasManager() {
     }
   };
 
-  // 🔹 reset formulario
   const resetForm = () => {
     setEditandoId(null);
     setForm({
@@ -103,7 +96,7 @@ export default function ReferenciasManager() {
 
   return (
     <div>
-      {/* FORMULARIO */}
+      {/* FORM */}
       <form
         onSubmit={handleSubmit}
         className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-8"
@@ -148,13 +141,11 @@ export default function ReferenciasManager() {
         />
 
         <button
-          className={`
-            text-white rounded px-4 py-2 md:col-span-2 transition
-            ${editandoId
+          className={`text-white rounded px-4 py-2 md:col-span-2 transition ${
+            editandoId
               ? "bg-blue-600 hover:bg-blue-700"
               : "bg-[#2c976a] hover:bg-[#24845c]"
-            }
-          `}
+          }`}
         >
           {editandoId ? "Actualizar referencia" : "Guardar referencia"}
         </button>
@@ -163,10 +154,7 @@ export default function ReferenciasManager() {
           <button
             type="button"
             onClick={resetForm}
-            className="
-              bg-gray-400 text-white rounded px-4 py-2
-              md:col-span-2 hover:bg-gray-500 transition
-            "
+            className="bg-gray-400 text-white rounded px-4 py-2 md:col-span-2 hover:bg-gray-500 transition"
           >
             Cancelar edición
           </button>
@@ -175,13 +163,13 @@ export default function ReferenciasManager() {
 
       {/* LISTADO */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-        {referencias.map(ref => (
+        {referencias.map((ref) => (
           <div
             key={ref.id}
             className="border rounded-xl overflow-hidden shadow-sm"
           >
             <img
-              src={`http://localhost:8000/storage/${ref.imagen}`}
+              src={`${import.meta.env.VITE_API_URL}/storage/${ref.imagen}`}
               alt={ref.nombre}
               className="h-48 w-full object-cover"
             />
@@ -217,4 +205,3 @@ export default function ReferenciasManager() {
     </div>
   );
 }
-

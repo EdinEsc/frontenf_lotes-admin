@@ -1,6 +1,3 @@
-
-
-
 import { NavLink, useNavigate } from 'react-router-dom';
 import { FaHome, FaUsers, FaUserPlus, FaSignOutAlt } from 'react-icons/fa';
 
@@ -26,8 +23,7 @@ export default function Sidebar() {
           z-50
         "
       >
-        
-      {/* LOGO / TEXTO ADMINISTRATIVO */}
+
       <div className="h-16 flex items-center justify-center overflow-hidden">
         {/* Sidebar cerrado */}
         <span
@@ -40,7 +36,7 @@ export default function Sidebar() {
           Adm
         </span>
 
-        {/* Sidebar abierto */}
+      
         <span
           className="
             hidden group-hover:block
@@ -52,7 +48,7 @@ export default function Sidebar() {
         </span>
       </div>
 
-      {/* MENU */}
+
       <nav className="flex-1 space-y-1 px-2 mt-4">
 
         <NavLink
@@ -99,7 +95,7 @@ export default function Sidebar() {
 
       </nav>
 
-      {/* LOGOUT */}
+
       <button
         onClick={handleLogout}
         className="

@@ -7,14 +7,14 @@ function GalleryAdmin() {
   const [message, setMessage] = useState("");
   const [error, setError] = useState("");
 
-  // Cargar imágenes existentes
+
   useEffect(() => {
     api.get("/admin/imagenes-gallery")
       .then(res => setImages(res.data))
       .catch(err => console.error(err));
   }, []);
 
-  // Subir nueva imagen
+ 
   const handleUpload = async (e) => {
     e.preventDefault();
     if (!image) {
@@ -33,7 +33,7 @@ function GalleryAdmin() {
       setError("");
       setImage(null);
 
-      // Recargar lista de imágenes
+     
       const res = await api.get("/admin/imagenes-gallery");
       setImages(res.data);
     } catch {
@@ -59,10 +59,10 @@ function GalleryAdmin() {
       </form>
 
       <div style={{ display: "flex", gap: "10px", flexWrap: "wrap", marginTop: "20px" }}>
-        {images.map((img) => (
+       {images.map((img) => (
           <div key={img.id} style={{ width: "150px" }}>
             <img
-              src={`http://127.0.0.1:8000/storage/${img.path}`}
+              src={`${import.meta.env.VITE_API_URL}/storage/${img.path}`}
               alt="Gallery"
               style={{ width: "100%", borderRadius: "8px" }}
             />

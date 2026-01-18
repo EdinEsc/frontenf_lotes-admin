@@ -9,8 +9,6 @@ function App() {
     <Router>
       <Routes>
         <Route path="/" element={<Login />} />
-        
-        {/* Todas las páginas internas protegidas van dentro del DashboardLayout */}
         <Route 
           path="/*" 
           element={
