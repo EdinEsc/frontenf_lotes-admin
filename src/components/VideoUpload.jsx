@@ -107,8 +107,9 @@ export default function VideoUpload() {
           className="border rounded px-3 py-2 mb-2 w-full"
         />
 
-        <input
+       <input
           type="file"
+          name="video"
           accept="video/*"
           onChange={handleFileChange}
           className="mb-3 w-full"
